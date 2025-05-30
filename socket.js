@@ -8,6 +8,7 @@ function socketInitialize(server) {
       origin: [
         "https://949m5q5k-3000.inc1.devtunnels.ms",
         "http://localhost:3000",
+        "https://urban-cab.vercel.app",
       ],
       methods: ["GET", "POST"],
     },
