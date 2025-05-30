@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Ride" ADD COLUMN     "droppedAt" TIMESTAMP(3),
+ADD COLUMN     "pickedupAt" TIMESTAMP(3),
+ADD COLUMN     "pickupLat" DOUBLE PRECISION,
+ADD COLUMN     "pickupLong" DOUBLE PRECISION,
+ADD COLUMN     "rating" INTEGER DEFAULT 0;

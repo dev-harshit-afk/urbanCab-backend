@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  firstname String
+  lastname  String?
+  email     String  @unique
+  password  String
+  socketId  String?
+  Ride      Ride[]
+}
+
+enum VehicleType {
+  car
+  bike
+  auto
+}
+
+model Captain {
+  id              Int         @id @default(autoincrement())
+  firstname       String
+  lastname        String?
+  email           String      @unique
+  password        String
+  socketId        String?
+  isAvailable     Boolean?    @default(false)
+  vehicleColor    String      @default("white")
+  vehiclePlate    String
+  vehicleCapacity Int         @default(4)
+  vehicleType     VehicleType @default(bike)
+  latitude        Float?      @default(0.0)
+  longitude       Float?      @default(0.0)
+  Ride            Ride[]
+}
+
+enum RideStatus {
+  pending
+  accepted
+  ongoing
+  completed
+  cancelled
+}
+
+model Ride {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  captainId   Int?
+  captain     Captain?    @relation(fields: [captainId], references: [id])
+  vehicleType VehicleType @default(auto)
+
+  pickup     String
+  pickupLat  Float?
+  pickupLong Float?
+
+  rating Int? @default(0)
+
+  destination String
+  fare        Float
+
+  status RideStatus @default(pending)
+
+  duration Int?
+  distance Float?
+
+  paymentId String?
+  orderId   String?
+  signature String?
+
+  otp String
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  pickedupAt DateTime?
+  droppedAt  DateTime?
+}
